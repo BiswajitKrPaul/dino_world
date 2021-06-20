@@ -37,9 +37,6 @@ class Dino extends AnimationComponent {
     );
 
     this.animation = _runanimation;
-
-    this.x = 100;
-    this.y = 300;
   }
 
   @override
@@ -60,6 +57,7 @@ class Dino extends AnimationComponent {
   void resize(Size size) {
     super.resize(size);
     this.height = this.width = size.width / ratioOfDinoSize;
+    this.x = this.width;
     this.y = size.height - this.height - groudHeight;
     this.yinitial = this.y;
   }
