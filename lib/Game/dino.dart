@@ -1,7 +1,9 @@
 import 'dart:ui';
 
+import 'package:flame/anchor.dart';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/spritesheet.dart';
+import 'package:flame/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/animation.dart' as Anim;
 
@@ -14,6 +16,8 @@ class Dino extends AnimationComponent {
   Anim.Animation _hitanimation;
   double yinitial = 0.0;
   double speedY = 0.0;
+  Timer _timer;
+  bool _isHit = false;
 
   Dino() : super.empty() {
     final spriteImage = SpriteSheet(
@@ -36,7 +40,12 @@ class Dino extends AnimationComponent {
       stepTime: 0.1,
     );
 
+    this.anchor = Anchor.center;
+
     this.animation = _runanimation;
+    _timer = Timer(2, callback: () {
+      run();
+    });
   }
 
   @override
@@ -51,6 +60,7 @@ class Dino extends AnimationComponent {
       this.y = this.yinitial;
       this.speedY = 0.0;
     }
+    _timer.update(t);
   }
 
   @override
@@ -58,7 +68,7 @@ class Dino extends AnimationComponent {
     super.resize(size);
     this.height = this.width = size.width / ratioOfDinoSize;
     this.x = this.width;
-    this.y = size.height - this.height - groudHeight;
+    this.y = size.height - (this.height / 2) - groudHeight + 10;
     this.yinitial = this.y;
   }
 
@@ -67,14 +77,19 @@ class Dino extends AnimationComponent {
   }
 
   void run() {
+    _isHit = false;
     this.animation = _runanimation;
   }
 
   void hit() {
-    this.animation = _hitanimation;
+    if (!_isHit) {
+      this.animation = _hitanimation;
+      _timer.start();
+      _isHit = true;
+    }
   }
 
   void jump() {
-    if (isOnGround()) this.speedY = -600;
+    if (isOnGround()) this.speedY = -450;
   }
 }

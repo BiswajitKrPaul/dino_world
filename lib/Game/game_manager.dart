@@ -39,7 +39,7 @@ class EnemyManager extends Component with HasGameRef<DinoGame> {
   @override
   void update(double t) {
     _timer.update(t);
-    var newSpawnLevel = (gameRef.score ~/ 500);
+    var newSpawnLevel = (gameRef.score ~/ 500); // converting double to int
     if (spawnLevel < newSpawnLevel) {
       spawnLevel = newSpawnLevel;
       var newTime = (4 / (1 + 0.1 * spawnLevel));

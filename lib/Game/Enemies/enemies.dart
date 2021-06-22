@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flame/anchor.dart';
 import 'package:flame/animation.dart';
 import 'package:flame/components/animation_component.dart';
 import 'package:flame/spritesheet.dart';
@@ -35,6 +36,7 @@ class Enemy extends AnimationComponent {
   double xinitial = 0.0;
   int textureWidth;
   int textureHeight;
+  EnemyType currentEnemyType;
 
   static const Map<EnemyType, EnemyData> enemies = {
     EnemyType.AngryPig: EnemyData(
@@ -61,6 +63,7 @@ class Enemy extends AnimationComponent {
   };
 
   Enemy(EnemyType enemyType) : super.empty() {
+    this.currentEnemyType = enemyType;
     final enemyData = enemies[enemyType];
     final spriteImage = SpriteSheet(
       imageName: enemyData.imageName,
@@ -80,7 +83,7 @@ class Enemy extends AnimationComponent {
 
     this.textureHeight = enemyData.textureHeight;
     this.textureWidth = enemyData.textureWidth;
-
+    this.anchor = Anchor.center;
     this.animation = _runAnimation;
   }
 
@@ -90,7 +93,11 @@ class Enemy extends AnimationComponent {
     double scaleFactor = (size.width / ratioOfDinoSize) / this.textureWidth;
     this.height = this.textureHeight * scaleFactor;
     this.width = this.textureWidth * scaleFactor;
-    this.y = size.height - this.height - groudHeight;
+    if (this.currentEnemyType == EnemyType.Bat) {
+      this.y = size.height - (this.height / 2) - groudHeight;
+    } else {
+      this.y = size.height - (this.height / 2) - groudHeight;
+    }
     this.x = size.width + this.width;
     this.xinitial = this.x;
   }

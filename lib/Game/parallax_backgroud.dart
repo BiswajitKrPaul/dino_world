@@ -1,3 +1,4 @@
+import 'package:dino_world/Game/Enemies/enemies.dart';
 import 'package:dino_world/Game/dino.dart';
 import 'package:dino_world/Game/game_manager.dart';
 import 'package:flame/components/parallax_component.dart';
@@ -54,5 +55,11 @@ class DinoGame extends BaseGame with TapDetector {
     super.update(t);
     score += (60 * t).toInt();
     _textComponent.text = 'Score : ${score.toString()}';
+
+    components.whereType<Enemy>().forEach((enemy) {
+      if (_dino.distance(enemy) < 20) {
+        _dino.hit();
+      }
+    });
   }
 }
